@@ -1,6 +1,8 @@
 package ru.vsu.cs.volchenko.site.controllers;
 
 import javax.validation.Valid;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,19 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import ru.vsu.cs.volchenko.site.dao.PersonDAO;
 import ru.vsu.cs.volchenko.site.models.Person;
 
-/**
- * @author Neil Alishev
- */
+@AllArgsConstructor(onConstructor=@__(@Autowired))
 @Controller
 @RequestMapping("/people")
 public class PeopleController {
 
     private final PersonDAO personDAO;
-
-    @Autowired
-    public PeopleController(PersonDAO personDAO) {
-        this.personDAO = personDAO;
-    }
 
     @GetMapping()
     public String index(Model model) {
