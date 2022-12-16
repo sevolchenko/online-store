@@ -26,6 +26,13 @@ import java.util.Objects;
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
+
+    @Autowired
+    public SpringConfig(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }/*
+
+    private final ApplicationContext applicationContext;
     private final Environment environment;
 
     @Autowired
@@ -73,5 +80,5 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
-    }
+    }*/
 }

@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 
 /**
  * @author Neil Alishev
- */
+ *//*
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -34,5 +34,23 @@ public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotation
     private void registerHiddenFieldFilter(ServletContext aContext) {
         aContext.addFilter("hiddenHttpMethodFilter",
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
+    }
+}*/
+
+public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
+    @Override
+    protected Class<?>[] getRootConfigClasses() {
+        return null;
+    }
+
+    @Override
+    protected Class<?>[] getServletConfigClasses() {
+        return new Class[] {SpringConfig.class};
+    }
+
+    @Override
+    protected String[] getServletMappings() {
+        return new String[] {"/"};
     }
 }
