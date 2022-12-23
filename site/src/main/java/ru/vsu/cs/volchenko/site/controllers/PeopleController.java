@@ -1,7 +1,6 @@
 package ru.vsu.cs.volchenko.site.controllers;
 
-import javax.validation.Valid;
-
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

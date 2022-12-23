@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<div th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}">
+
+    <div th:each="photo : ${product.getPhotos()}">
+        <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}">
+    </div>
+    <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}">
+    <p th:text="${product.getName()}">VALUE</p>
+    <p th:text="${product.getCategory().getName()}">VALUE</p>
+    <p th:text="${product.getDescription()}">VALUE</p>
+    <p th:text="${product.getReleaseDate()}">DATE</p>
+    <p th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}"
+       th:text="${product.getCurrentPrice()}">VALUE</p>
+
+    <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit</a>
+
+    <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}">
+        <input type="submit" value="Delete"/>
+    </form>
+
+</div>
+
+<p th:if="${product.getStateOfShownInfo().toString() == 'HIDE_ALL'}">Element hidden</p>
+</body>
+</html>

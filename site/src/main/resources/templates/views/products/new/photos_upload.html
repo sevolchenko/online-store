@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show</title>
+</head>
+<body>
+<p th:each="photo : ${product.getPhotos()}">
+    <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}">
+</p>
+</body>
+</html>

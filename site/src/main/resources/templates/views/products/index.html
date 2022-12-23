@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<div th:each="product : ${products}">
+    <a th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}"
+       th:text="${product.getName() + ': ' + product.getDescription()}">product</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/products/new">Create new product</a>
+
+</body>
+</html>
