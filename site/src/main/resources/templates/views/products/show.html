@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script th:src="@{/scripts/cartManipulation.js}"></script>
     <title>Show</title>
 </head>
 <body>
@@ -19,6 +20,10 @@
        th:text="${product.getCurrentPrice()}">VALUE</p>
 
     <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit</a>
+
+    <form>
+        <input type="button" th:onclick="${addProductToCart({id})(id=${product.getId())}}" value = "Message Print">
+    </form>
 
     <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}">
         <input type="submit" value="Delete"/>
