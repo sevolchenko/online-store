@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order approve</title>
+    <script th:src="@{/scripts/orderContextManipulation.js}"></script>
+</head>
+<body>
+<header th:insert="general :: header"> content here </header>
+
+<div th:insert="orders/show :: productShow"> content here </div>
+
+    <form th:method="POST" th:action="@{/orders/approve}" th:object="${orderDetails}" id="approve">
+        <div th:insert="orders/new :: formContent" hidden> content here </div>
+        <input type="submit" hidden>
+    </form>
+
+    <input type="button" onclick="sendOrderContext()" value = "Approve">
+
+</body>
+</html>
