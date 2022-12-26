@@ -50,8 +50,8 @@ public class ProductsController {
 
 
     @PostMapping(path = "/new", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public String create(@ModelAttribute("product") @Valid Product product,
-                         @RequestPart("image") MultipartFile multipartFile,
+    public String create(@RequestPart("image") MultipartFile multipartFile,
+                         @ModelAttribute("product") @Valid Product product,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "products/new";
@@ -78,8 +78,8 @@ public class ProductsController {
     }
 
     @PatchMapping(path = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public String update(@ModelAttribute("product") @Valid Product product,
-                         @RequestPart("image") MultipartFile multipartFile,
+    public String update(@RequestPart("image") MultipartFile multipartFile,
+                         @ModelAttribute("product") @Valid Product product,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())

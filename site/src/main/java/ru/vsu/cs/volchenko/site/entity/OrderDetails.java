@@ -1,5 +1,6 @@
 package ru.vsu.cs.volchenko.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -17,8 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "order_details")
+public class OrderDetails {
 
     @Id
     @Column(name = "order_id")
@@ -30,7 +31,7 @@ public class Order {
     private String name;
 
     @NotEmpty(message = "Phone number should not be empty")
-    @Pattern(regexp="(^$|[0-9]{10})")
+    @Pattern(regexp="(^$|\\+?[0-9]{11})")
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -69,7 +70,8 @@ public class Order {
     @Column(name = "promocode")
     private String promoCode;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "orderDetails", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderedProduct> orderedProducts;
 
 }

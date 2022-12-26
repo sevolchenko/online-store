@@ -15,9 +15,7 @@ public class OrderedProductId implements Serializable {
 
     private Product product;
 
-    private Order order;
-
-    private ProductSize productSize;
+    private OrderDetails orderDetails;
 
     @Override
     public boolean equals(Object o) {
@@ -27,15 +25,13 @@ public class OrderedProductId implements Serializable {
         OrderedProductId that = (OrderedProductId) o;
 
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        if (order != null ? !order.equals(that.order) : that.order != null) return false;
-        return productSize == that.productSize;
+        return orderDetails != null ? orderDetails.equals(that.orderDetails) : that.orderDetails == null;
     }
 
     @Override
     public int hashCode() {
         int result = product != null ? product.hashCode() : 0;
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + (productSize != null ? productSize.hashCode() : 0);
+        result = 31 * result + (orderDetails != null ? orderDetails.hashCode() : 0);
         return result;
     }
 }

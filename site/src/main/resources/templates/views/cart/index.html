@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <script th:src="@{/scripts/cartManipulation.js}"></script>
+    <script th:src="@{/scripts/orderContextManipulation.js}"></script>
+</head>
+<body>
+
+<header th:insert="general :: header"> content here</header>
+
+<table id="tableCart"></table>
+
+<script th:inline="javascript">
+
+    var cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    var table = document.getElementById("tableCart");
+
+    if (cart.length === 0) {
+
+        table.insertRow(0).insertCell(0).innerText = "Cart is empty";
+
+    } else {
+
+        let sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+        products = [[${products}]]
+
+        for (var i = 0; i < cart.length; i++) {
+
+            var id = cart[i];
+            var product = products.filter((prod) => prod.id === id)[0];
+
+            var row = table.insertRow(i);
+            row.id = id;
+
+            var cell0 = row.insertCell(0);
+            cell0.innerHTML = '<input type="checkbox" id="' + id + '" name="selection" value="selection" checked />';
+
+            var cell1 = row.insertCell(1);
+            for (let i = 1; i <= 5; i++) {
+                cell1.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+            cell1.innerHTML = '<select name="count" id="' + id + '">' + cell1.innerHTML;
+            cell1.innerHTML += '</select>';
+
+            var cell2 = row.insertCell(2);
+            for (let i = 0; i < sizes.length; i++) {
+                cell2.innerHTML += `<option value="${sizes[i]}">${sizes[i]}</option>`;
+            }
+            cell2.innerHTML = '<select name="size" id="' + id + '">' + cell2.innerHTML;
+            cell2.innerHTML += '</select>';
+
+            var cell3 = row.insertCell(3);
+            cell3.innerHTML = '<a href=../products/' + id + '>' + product.name + '</a>';
+
+            var cell4 = row.insertCell(4);
+            cell4.innerHTML = product.currentPrice;
+
+            var cell5 = row.insertCell(5);
+            cell5.innerHTML = '<form><input type="button" onclick="removeProductFromCart(' + id + ')" value = "Delete"></form>'
+
+        }
+
+        table.insertAdjacentHTML("afterend",
+            '<input type="button" onclick="saveOrderContext()" value = "Order">');
+    }
+
+    </script>
+
+    </body>
+    </html>

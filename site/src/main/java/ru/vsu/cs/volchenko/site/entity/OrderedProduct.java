@@ -1,5 +1,6 @@
 package ru.vsu.cs.volchenko.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -19,14 +20,15 @@ public class OrderedProduct {
     @Id
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonBackReference
     private Product product;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    @JsonBackReference
+    private OrderDetails orderDetails;
 
-    @Id
     @Column(name = "size", columnDefinition = "ENUM('ONE_SIZE', 'XS', 'S', 'M', 'L', 'XL', 'XXL')")
     @Enumerated(EnumType.STRING)
     private ProductSize productSize;

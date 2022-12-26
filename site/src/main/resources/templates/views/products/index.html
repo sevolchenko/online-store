@@ -2,9 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>Products</title>
 </head>
 <body>
+
+<header th:insert="general :: header"> content here </header>
 
 <div th:each="product : ${products}">
     <a th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}"

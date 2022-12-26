@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div style="display:flex" th:fragment="header">
+        <div>
+            <a th:href="@{../}">
+                <img th:src="@{/photos/home.png}">
+            </a>
+        </div>
+        <div>
+            <a th:href="@{../products}">
+                <img th:src="@{/photos/view.png}">
+            </a>
+        </div>
+        <div>
+            <a th:href="@{../cart}">
+                <img th:src="@{/photos/cart.png}">
+            </a>
+        </div>
+    </div>
+</body>
+</html>

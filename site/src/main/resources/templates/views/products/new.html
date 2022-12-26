@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New</title>
 </head>
 <body>
+
+<header th:insert="general :: header"> content here </header>
 
 <form th:method="POST" enctype="multipart/form-data" th:action="@{/products/new}" th:object="${product}">
     <fieldset>
@@ -47,7 +49,7 @@
             <input type="file" name="image" accept="image/*" id="image">
         </p>
         <p>
-            <input type="submit" value="Next step"/>
+            <input type="submit" value="Create"/>
         </p>
     </fieldset>
 </form>

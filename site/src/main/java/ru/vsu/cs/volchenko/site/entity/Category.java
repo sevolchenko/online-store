@@ -1,5 +1,7 @@
 package ru.vsu.cs.volchenko.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -25,9 +27,11 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id", foreignKey = @ForeignKey(name = "parent_category_id"))
+    @JsonBackReference
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Category> childrenCategories;
 
     @NotEmpty(message = "Name should not be empty")
@@ -35,6 +39,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     private List<Product> products;
 
 }

@@ -1,5 +1,7 @@
 package ru.vsu.cs.volchenko.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,6 +29,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 
     @NotEmpty(message = "Name should not be empty")
@@ -59,8 +62,10 @@ public class Product {
     private StateOfShownInfo stateOfShownInfo = StateOfShownInfo.HIDE_ALL;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Photo> photos;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<OrderedProduct> orderedProducts;
 }

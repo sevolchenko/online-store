@@ -2,32 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script th:src="@{/scripts/cartManipulation.js}"></script>
     <title>Show</title>
+    <script th:src="@{/scripts/cartManipulation.js}"></script>
+    <script th:src="@{/scripts/cartButtonsVisibility.js}"></script>
 </head>
-<body>
+<body th:onload="'hideNecessaryElement(' + ${product.getId()} + ')'">
+
+<header th:insert="general :: header"> content here </header>
+
 <div th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}">
-
-    <div th:each="photo : ${product.getPhotos()}">
-        <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}">
+    <div style="border: 1px black solid;">
+        <div th:each="photo : ${product.getPhotos()}">
+            <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}">
+        </div>
+        <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}">
+        <p th:text="${product.getName()}">VALUE</p>
+        <p th:text="${product.getCategory().getName()}">VALUE</p>
+        <p th:text="${product.getDescription()}">VALUE</p>
+        <p th:text="${product.getReleaseDate()}">DATE</p>
+        <p th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}"
+           th:text="${product.getCurrentPrice()}">VALUE</p>
     </div>
-    <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}">
-    <p th:text="${product.getName()}">VALUE</p>
-    <p th:text="${product.getCategory().getName()}">VALUE</p>
-    <p th:text="${product.getDescription()}">VALUE</p>
-    <p th:text="${product.getReleaseDate()}">DATE</p>
-    <p th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}"
-       th:text="${product.getCurrentPrice()}">VALUE</p>
 
-    <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit</a>
+    <div>
+        <br>
+        <form id="formAdd" th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}">
+            <input type="button" th:onclick="'addProductToCart(' + ${product.getId()} + ')'" value = "Add product to cart">
+        </form>
+        <form id="formRemove" th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}">
+            <input type="button" th:onclick="'removeProductFromCart(' + ${product.getId()} + ')'" value = "Delete product from cart">
+        </form>
+    </div>
 
-    <form>
-        <input type="button" th:onclick="${addProductToCart({id})(id=${product.getId())}}" value = "Message Print">
-    </form>
 
-    <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}">
-        <input type="submit" value="Delete"/>
-    </form>
+    <div>
+        <br>
+        <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit product</a>
+
+        <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}">
+            <input type="submit" value="Delete product"/>
+        </form>
+    </div>
+
 
 </div>
 
