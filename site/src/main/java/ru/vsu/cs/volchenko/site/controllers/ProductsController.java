@@ -15,10 +15,13 @@ import ru.vsu.cs.volchenko.site.services.CategoriesService;
 import ru.vsu.cs.volchenko.site.services.ProductsService;
 
 import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 @Controller
@@ -31,7 +34,16 @@ public class ProductsController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("products", productsService.findAll());
+        model.addAttribute("products", productsService.findAllNotHidden());
+        return "products/index";
+    }
+
+    @GetMapping(params = {"page", "itemsPerPage"})
+    public String indexWithPages(@RequestParam("page") int page,
+                                 @RequestParam("itemsPerPage") int itemsPerPage,
+                                 Model model) {
+        model.addAttribute("products", productsService.findAllNotHidden(page, itemsPerPage));
+        model.addAttribute("overallProducts", productsService.countOfNotHidden());
         return "products/index";
     }
 
@@ -50,22 +62,27 @@ public class ProductsController {
 
 
     @PostMapping(path = "/new", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public String create(@RequestPart("image") MultipartFile multipartFile,
+    public String create(@RequestPart("images[]") MultipartFile[] multipartFiles,
                          @ModelAttribute("product") @Valid Product product,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "products/new";
 
-        try {
-            byte[] picBytes = multipartFile.getBytes();
-            Blob blob = new SerialBlob(picBytes);
-            Photo photo = new Photo();
-            photo.setPhoto(blob);
-            product.setPhotos(new ArrayList<>());
-            product.getPhotos().add(photo);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        List<Photo> photos = new ArrayList<>();
+
+        Arrays.stream(multipartFiles).forEach(multipartFile -> {
+            try {
+                byte[] picBytes = multipartFile.getBytes();
+                Blob blob = new SerialBlob(picBytes);
+                Photo photo = new Photo();
+                photo.setPhoto(blob);
+                photos.add(photo);
+            } catch (IOException | SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        product.setPhotos(photos);
+
         productsService.save(product);
         return "redirect:/products/" + product.getId();
     }
@@ -78,23 +95,27 @@ public class ProductsController {
     }
 
     @PatchMapping(path = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public String update(@RequestPart("image") MultipartFile multipartFile,
+    public String update(@RequestPart("images[]") MultipartFile[] multipartFiles,
                          @ModelAttribute("product") @Valid Product product,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
             return "products/edit";
 
-        try {
-            byte[] picBytes = multipartFile.getBytes();
-            Blob blob = new SerialBlob(picBytes);
-            Photo photo = new Photo();
-            photo.setPhoto(blob);
-            product.setPhotos(new ArrayList<>());
-            product.getPhotos().add(photo);
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        List<Photo> photos = new ArrayList<>();
+
+        Arrays.stream(multipartFiles).forEach(multipartFile -> {
+            try {
+                byte[] picBytes = multipartFile.getBytes();
+                Blob blob = new SerialBlob(picBytes);
+                Photo photo = new Photo();
+                photo.setPhoto(blob);
+                photos.add(photo);
+            } catch (IOException | SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        product.setPhotos(photos);
 
         productsService.update(id, product);
         return "redirect:/products/" + product.getId();

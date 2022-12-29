@@ -8,12 +8,59 @@
 
 <header th:insert="general :: header"> content here </header>
 
+<form method="GET" th:action="@{/products}">
+    <label for="itemsPerPage">Items per page</label>
+    <select name="itemsPerPage" id="itemsPerPage">
+        <option value=10>10</option>
+        <option value=20>20</option>
+        <option value=50>50</option>
+        <option value=100>100</option>
+        <option value=1000>1000</option>
+    </select>
+    <input name="page" value=0 hidden>
+    <input type="submit" value="Show">
+</form>
+
+<br>
+
 <div th:each="product : ${products}">
     <a th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}"
        th:text="${product.getName() + ': ' + product.getDescription()}">product</a>
 </div>
 
+<div>
+    <p id="allPages"></p>
+</div>
+
 <br/>
+
+<script th:inline="javascript">
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+    if (urlParams.has('page')) {
+        var currPage = urlParams.get('page');
+
+        var itemsPerPage = urlParams.get('itemsPerPage');
+
+        var productsCount = [[${overallProducts}]];
+
+        var pagesCount = Math.ceil(productsCount / itemsPerPage);
+
+        document.getElementById("itemsPerPage").value = itemsPerPage;
+
+        for (let i = pagesCount - 1; i >= 0; i--) {
+            var link = '<a href="products?page=' + i + '&itemsPerPage=' + itemsPerPage + '">' + (i + 1) + '</a> ';
+            if (i === parseInt(currPage)) {
+                link = '<b>' + link + '</b>';
+            }
+            document.getElementById("allPages").insertAdjacentHTML("afterend", link);
+        }
+    }
+
+</script>
+
 <hr/>
 
 <a href="/products/new">Create new product</a>

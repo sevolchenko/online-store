@@ -4,18 +4,28 @@
     <meta charset="UTF-8">
     <title>Show</title>
     <script th:src="@{/scripts/cartManipulation.js}"></script>
-    <script th:src="@{/scripts/cartButtonsVisibility.js}"></script>
+    <script th:src="@{/scripts/productsShowVisibility.js}"></script>
+    <link rel="stylesheet" th:href="@{/stylesheets/index.css}">
 </head>
-<body th:onload="'hideNecessaryElement(' + ${product.getId()} + ')'">
+<body th:onload="'hideNecessaryElements(' + ${product.getId()} + ', ' + ${product.getPhotos().size()} + ')'">
 
 <header th:insert="general :: header"> content here </header>
 
 <div th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}">
     <div style="border: 1px black solid;">
-        <div th:each="photo : ${product.getPhotos()}">
-            <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}">
+        <div th:if="${product.getPhotos().size() != 0}"  style="display:flex">
+            <form id="formPrevPhoto">
+                <input type="button" onclick="prevPhoto()" value = "Prev">
+            </form>
+            <div th:each="photo : ${product.getPhotos()}">
+                <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}"
+                     th:id="'photo' + ${photo.getPosition()}" class="productPhoto">
+            </div>
+            <form id="formNextPhoto">
+                <input type="button" onclick="nextPhoto()" value = "Next">
+            </form>
         </div>
-        <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}">
+        <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}" class="productPhoto">
         <p th:text="${product.getName()}">VALUE</p>
         <p th:text="${product.getCategory().getName()}">VALUE</p>
         <p th:text="${product.getDescription()}">VALUE</p>

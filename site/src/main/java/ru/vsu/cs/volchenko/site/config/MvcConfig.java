@@ -22,7 +22,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("*/script/**")
                 .addResourceLocations("file://" + SCRIPTS_FOLDER);
 
-        registry.addResourceHandler("*/stylesheet/**")
+        registry.addResourceHandler("*/stylesheets/**")
                 .addResourceLocations("file://" + STYLESHEETS_FOLDER);
     }
 

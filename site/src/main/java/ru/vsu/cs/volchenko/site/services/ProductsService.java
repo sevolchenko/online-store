@@ -2,11 +2,13 @@ package ru.vsu.cs.volchenko.site.services;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.vsu.cs.volchenko.site.config.MvcConfig;
 import ru.vsu.cs.volchenko.site.entity.Photo;
 import ru.vsu.cs.volchenko.site.entity.Product;
+import ru.vsu.cs.volchenko.site.entity.StateOfShownInfo;
 import ru.vsu.cs.volchenko.site.repositories.PhotosRepository;
 import ru.vsu.cs.volchenko.site.repositories.ProductsRepository;
 
@@ -31,6 +33,20 @@ public class ProductsService {
     public List<Product> findAll() {
         return productsRepository.findAll();
     }
+    public List<Product> findAllNotHidden() {
+        return productsRepository.findAllByStateOfShownInfoNot(StateOfShownInfo.HIDE_ALL);
+    }
+
+    public List<Product> findAllNotHidden(int page, int itemsPerPage) {
+        return productsRepository.findAllByStateOfShownInfoNot(StateOfShownInfo.HIDE_ALL,
+                PageRequest.of(page, itemsPerPage)).getContent();
+    }
+
+    public Long countOfNotHidden() {
+        return productsRepository.countByStateOfShownInfoNot(StateOfShownInfo.HIDE_ALL);
+    }
+
+
 
     public Product findOne(int id) {
         Product product = productsRepository.findById(id).orElse(null);
@@ -61,6 +77,7 @@ public class ProductsService {
             IntStream.range(0, product.getPhotos().size())
                     .forEach(idx -> {
                         Photo photo = product.getPhotos().get(idx);
+                        photo.setPosition(idx);
                         photo.setProduct(product);
                     });
         }
@@ -77,6 +94,7 @@ public class ProductsService {
             IntStream.range(0, updatedProduct.getPhotos().size())
                     .forEach(idx -> {
                         Photo photo = updatedProduct.getPhotos().get(idx);
+                        photo.setPosition(idx);
                         photo.setProduct(updatedProduct);
                     });
         }
