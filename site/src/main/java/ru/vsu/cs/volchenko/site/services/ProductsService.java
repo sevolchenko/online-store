@@ -19,6 +19,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -67,6 +68,15 @@ public class ProductsService {
         return product;
     }
 
+    public List<Product> getCartProducts(String cart) {
+        String[] cartItems = cart.split("_");
+        List<Product> products = new ArrayList<>();
+        Arrays.stream(cartItems)
+                .mapToInt(Integer::parseInt)
+                .forEach(id -> products.add(findOne(id)));
+        return products;
+    }
+
     @Transactional
     public void save(Product product) {
         product.setReleaseDate(LocalDate.now());
@@ -97,6 +107,13 @@ public class ProductsService {
                         photo.setPosition(idx);
                         photo.setProduct(updatedProduct);
                     });
+            updatedProduct.setPhotos(updatedProduct.getPhotos().stream().filter(photo -> {
+                try {
+                    return photo.getPhoto().length() != 0;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList());
         }
         productsRepository.save(updatedProduct);
         photoRepository.saveAll(updatedProduct.getPhotos());

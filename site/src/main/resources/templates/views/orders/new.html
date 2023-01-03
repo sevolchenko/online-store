@@ -8,51 +8,5 @@
 
 <header th:insert="general :: header"> content here </header>
 
-<form th:method="POST" th:action="@{/orders/new}" th:object="${orderDetails}" >
-    <fieldset>
-        <div th:fragment="formContent">
-            <label for="name">Enter your name: </label>
-            <input type="text" th:field="*{name}" id="name"/>
-            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
-            <br/>
-            <label for="phoneNumber">Enter phone number: </label>
-            <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
-            <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone number Error</div>
-            <br/>
-            <label for="email">Enter email: </label>
-            <input type="text" th:field="*{email}" id="email"/>
-            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
-            <br/>
-            <label for="postIndex">Enter post index: </label>
-            <input type="text" th:field="*{postIndex}" id="postIndex"/>
-            <div style="color:red" th:if="${#fields.hasErrors('postIndex')}" th:errors="*{postIndex}">Post index Error</div>
-            <br/>
-            <label for="country">Enter country: </label>
-            <input type="text" th:field="*{country}" id="country"/>
-            <div style="color:red" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country Error</div>
-            <br/>
-            <label for="city">Enter city: </label>
-            <input type="text" th:field="*{city}" id="city"/>
-            <div style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City Error</div>
-            <br/>
-            <label for="address">Enter address: </label>
-            <input type="text" th:field="*{address}" id="address"/>
-            <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</div>
-            <br/>
-            <label for="comment">Enter comment: </label>
-            <input type="text" th:field="*{comment}" id="comment"/>
-            <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment Error</div>
-            <br/>
-            <label for="promoCode">Enter promocode: </label>
-            <input type="text" th:field="*{promoCode}" id="promoCode"/>
-            <div style="color:red" th:if="${#fields.hasErrors('promoCode')}" th:errors="*{promoCode}">Promocode Error</div>
-            <br/>
-        </div>
-        <p>
-            <input type="submit" id="buttonNew" value="Create"/>
-        </p>
-    </fieldset>
-</form>
-
 </body>
 </html>

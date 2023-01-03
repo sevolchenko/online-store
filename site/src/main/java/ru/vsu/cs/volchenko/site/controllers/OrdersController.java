@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.vsu.cs.volchenko.site.dto.OrderedProductDTO;
 import ru.vsu.cs.volchenko.site.entity.OrderDetails;
+import ru.vsu.cs.volchenko.site.entity.Product;
 import ru.vsu.cs.volchenko.site.services.OrdersService;
+import ru.vsu.cs.volchenko.site.services.ProductsService;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @AllArgsConstructor(onConstructor=@__(@Autowired))
@@ -23,52 +26,64 @@ import java.util.Objects;
 public class OrdersController {
 
     private final OrdersService ordersService;
+    private final ProductsService productsService;
 
     @GetMapping("/new")
     public String newGet(@ModelAttribute("orderDetails") OrderDetails orderDetails) {
         return "orders/new";
     }
 
-    @PostMapping("/new")
-    public String createNew(@ModelAttribute("orderDetails") @Valid OrderDetails orderDetails,
-                          BindingResult bindingResult,
-                          RedirectAttributes redirectAttrs) {
+    @PostMapping(value = "/new", params = {"cart"})
+    public String createNew(@RequestParam(name = "cart") String cart,
+                            @ModelAttribute("orderDetails") @Valid OrderDetails orderDetails,
+                            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "orders/new";
         }
 
-        redirectAttrs.addFlashAttribute("orderDetails", orderDetails);
+        ordersService.save(orderDetails);
+
+        List<Product> products = productsService.getCartProducts(cart);
 
         return ("redirect:/orders/approve");
     }
 
     @GetMapping("/approve")
-    public String approve(@ModelAttribute("orderDetails") OrderDetails orderDetails) {
+    public String approve(Model model,
+                          @ModelAttribute("orderDetails") OrderDetails orderDetails) {
+        model.addAttribute("orderDetails", orderDetails);
         return "orders/approve";
     }
 
-    @PostMapping("/approve")
-    public void approvePost(@ModelAttribute("orderDetails") OrderDetails orderDetails) {
-
-        ordersService.save(orderDetails);
-
-    }
+//    @PostMapping(value = "/addCartInfo", consumes="application/json")
+//    public String addCartInfo(@RequestPart OrderedProductDTO[] dtoArr,
+//                              @RequestPart OrderDetails orderDetails,
+//                              RedirectAttributes redirectAttrs) {
+//
+//        Arrays.stream(dtoArr)
+//                .filter(Objects::nonNull)
+//                .forEach(ordersService::addProduct);
+//
+//        ordersService.save(orderDetails);
+//
+//        redirectAttrs.addFlashAttribute("orderDetails", orderDetails);
+//
+//        return ("redirect:/orders/success");
+//    }
 
     @PostMapping(value = "/addCartInfo", consumes="application/json")
-    public String addCartInfo(@RequestBody OrderedProductDTO[] dtoArr) {
+    public String addCartInfo(@RequestBody String json) {
 
-        Arrays.stream(dtoArr)
-                .filter(Objects::nonNull)
-                .forEach(ordersService::addProduct);
+        System.out.println(json);
 
         return ("redirect:/orders/success");
     }
 
     @GetMapping("/success")
-    public String successGet(Model model) {
+    public String successGet(Model model,
+                             @ModelAttribute("orderDetails") OrderDetails orderDetails) {
 
-        OrderDetails orderDetails = ordersService.getLast();
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("overallPrice", ordersService.getOverallPrice(orderDetails));
 
