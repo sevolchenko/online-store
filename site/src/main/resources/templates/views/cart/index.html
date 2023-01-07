@@ -11,7 +11,7 @@
 <header th:insert="general :: header"> content here</header>
 
 <table id="tableCart"></table>
-<form th:method="POST" th:onsubmit="sendOrder()" th:object="${orderDetails}" id="orderForm" hidden>
+<form th:onsubmit="sendOrder()" th:object="${orderDetails}" id="orderForm" hidden>
     <fieldset>
         <div>
             <label for="name">Enter your name: </label>
@@ -52,48 +52,21 @@
             <br/>
         </div>
         <p>
-            <input type="submit" id="buttonNew" value="Create"/>
+            <input type="submit" id="buttonNew" value="Create" hidden>
         </p>
-
     </fieldset>
-
-    <input type="button" onclick="saveOrderContext()" value = "Order">
 </form>
 
+<input type="button" onclick="sendOrder()" value = "Order">
+
 <script th:inline="javascript">
-
-    function sendOrderContext() {
-        var cart = localStorage.getItem('orderContext');
-        var orderDetails = [[${orderDetails}]];
-        var jsonOrderDetails = JSON.stringify(orderDetails);
-
-        var body = [];
-        body[0] = cart;
-        body[1] = jsonOrderDetails;
-
-        console.log(jsonOrderDetails);
-
-        fetch('http://localhost:8080/orders/addCartInfo', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: body
-        });
-
-        document.location.href = "./success"
-
-        localStorage.removeItem('cart')
-        localStorage.removeItem('orderContext')
-    }
 
     function buildCartParam() {
         var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         var url = window.location.href;
         var cartParam = '';
-        if (url.indexOf('?') > -1){
+        if (url.indexOf('?') > -1) {
             cartParam += '&';
         } else {
             cartParam += '?';
@@ -110,13 +83,13 @@
     }
 
     function init() {
-        var cart = JSON.parse(localStorage.getItem('cart')) || [];
-
         var url = window.location.href;
         if (!url.includes('cart=')) {
             url += buildCartParam();
             window.location.href = url;
         } else {
+
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             var table = document.getElementById("tableCart");
 

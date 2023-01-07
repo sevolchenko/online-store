@@ -7,7 +7,7 @@
 <body>
 <header th:insert="general :: header"> content here </header>
 <div th:fragment="productShow">
-    <b>Check order details</b><br>
+    <b th:text="'Order details: ' + ${orderDetails.getId()}"></b><br>
     <p th:text="${orderDetails.getName()}"></p>
     <p th:text="${orderDetails.getPhoneNumber()}"></p>
     <p th:text="${orderDetails.getEmail()}"></p>
@@ -25,8 +25,8 @@
 
             var table = document.getElementById("tableOrderedProducts");
 
-            products = [[${orderDetails.getOrderedProducts()}]]
-            products_names = [[${productsNames}]]
+            var products = [[${orderDetails.getOrderedProducts()}]]
+            var productsNames = [[${productsNames}]]
 
             for (var i = 0; i < products.length; i++) {
 
@@ -35,7 +35,7 @@
                 var row = table.insertRow(i);
 
                 var cell0 = row.insertCell(0);
-                cell0.innerHTML = products_names[i];
+                cell0.innerHTML = productsNames[i];
 
                 var cell1 = row.insertCell(1);
                 cell1.innerHTML = product.productSize;

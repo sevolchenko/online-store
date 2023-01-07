@@ -34,6 +34,7 @@ public class ProductsService {
     public List<Product> findAll() {
         return productsRepository.findAll();
     }
+
     public List<Product> findAllNotHidden() {
         return productsRepository.findAllByStateOfShownInfoNot(StateOfShownInfo.HIDE_ALL);
     }
@@ -72,6 +73,7 @@ public class ProductsService {
         String[] cartItems = cart.split("_");
         List<Product> products = new ArrayList<>();
         Arrays.stream(cartItems)
+                .filter(item -> !"".equals(item))
                 .mapToInt(Integer::parseInt)
                 .forEach(id -> products.add(findOne(id)));
         return products;

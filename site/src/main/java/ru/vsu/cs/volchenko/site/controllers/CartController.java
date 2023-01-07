@@ -4,18 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.vsu.cs.volchenko.site.dto.OrderedProductDTO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.vsu.cs.volchenko.site.entity.OrderDetails;
-import ru.vsu.cs.volchenko.site.entity.Product;
 import ru.vsu.cs.volchenko.site.services.OrdersService;
 import ru.vsu.cs.volchenko.site.services.ProductsService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor(onConstructor=@__(@Autowired))
 @Controller
@@ -29,6 +25,7 @@ public class CartController {
     public String index(@ModelAttribute("orderDetails") OrderDetails orderDetails) {
         return "cart/index";
     }
+
     @GetMapping(params = {"cart"})
     public String index(@RequestParam(name = "cart") String cart,
                         @ModelAttribute("orderDetails") OrderDetails orderDetails,
@@ -37,20 +34,14 @@ public class CartController {
         return "cart/index";
     }
 
-    @PostMapping(value = "/addCartInfo", consumes="application/json")
-    public String addCartInfo(@RequestPart OrderedProductDTO[] dtoArr,
-                              @RequestPart OrderDetails orderDetails,
-                              RedirectAttributes redirectAttrs) {
+    @GetMapping("/success")
+    public String index(@ModelAttribute("orderDetails") OrderDetails orderDetails,
+                        Model model) {
 
-        Arrays.stream(dtoArr)
-                .filter(Objects::nonNull)
-                .forEach(ordersService::addProduct);
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("overallPrice", ordersService.getOverallPrice(orderDetails));
 
-        ordersService.save(orderDetails);
-
-        redirectAttrs.addFlashAttribute("orderDetails", orderDetails);
-
-        return ("redirect:/orders/success");
+        return "cart/success";
     }
 
 

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDTO {
 
-    private OrderedProductDTO[] orderedProductDTOS;
+    private OrderedProductDTO[] orderContext;
 
-    private OrderDetailsDTO orderDetailsDTO;
+    private OrderDetailsDTO orderDetails;
 
 }

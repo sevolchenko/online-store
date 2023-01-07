@@ -1,4 +1,4 @@
-function saveOrderContext() {
+function buildOrderContext() {
 
     var table = document.getElementById("tableCart");
 
@@ -14,58 +14,45 @@ function saveOrderContext() {
             }
         }
     }
-    localStorage.setItem('orderContext', JSON.stringify(orderContext));
-    console.log(localStorage.getItem('orderContext'))
 
-    location.href="../orders/new";
+    return orderContext;
 }
 
-function sendOrderContext() {
-    document.getElementById('approve').submit();
+async function sendOrder() {
 
-    var orderContext = localStorage.getItem('orderContext')
-
-    fetch('http://localhost:8080/orders/addCartInfo', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: orderContext
-    })
-
-    document.location.href = "./success";
-
-    localStorage.removeItem('cart');
-    localStorage.removeItem('orderContext');
-}
-
-
-function sendOrder() {
     var orderDetails = {};
     new FormData(document.getElementById("orderForm"))
         .forEach((value, key) => orderDetails[key] = value);
-    var jsonObject = JSON.stringify(orderDetails);
 
-    console.log(jsonObject);
 
-    var orderContext = localStorage.getItem('orderContext');
+    var orderContext = buildOrderContext();
 
     var order = {};
     order['orderDetails'] = orderDetails;
     order['orderContext'] = orderContext;
 
-    fetch('http://localhost:8080/cart/addCartInfo', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: order
-    })
+    try {
+        const response = await fetch('http://localhost:8080/cart/addCartInfo', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        });
 
-    document.location.href = "./success";
+        if (!response.ok) {
+            const msg = response.status;
+            throw new Error(msg);
+        }
 
-    localStorage.removeItem('cart');
-    localStorage.removeItem('orderContext');
+        const data = await response.json();
+
+        document.location.href = "./orders/" + data["orderId"];
+
+        localStorage.removeItem('cart');
+        localStorage.removeItem('orderContext');
+    } catch (error) {
+        console.log(error);
+    }
 }
