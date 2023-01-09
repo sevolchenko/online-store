@@ -29,15 +29,15 @@ function showCurrentPhoto() {
 
     if (currentPhotoIndex !== -1) {
         if (currentPhotoIndex === 0) {
-            document.getElementById("formPrevPhoto").style.display = "none";
+            document.getElementById("formPrevPhoto").setAttribute("disabled","disabled");
         } else {
-            document.getElementById("formPrevPhoto").style.display = "block";
+            document.getElementById("formPrevPhoto").removeAttribute("disabled");
         }
 
         if (currentPhotoIndex === photosCount - 1) {
-            document.getElementById("formNextPhoto").style.display = "none";
+            document.getElementById("formNextPhoto").setAttribute("disabled","disabled");
         } else {
-            document.getElementById("formNextPhoto").style.display = "block";
+            document.getElementById("formNextPhoto").removeAttribute("disabled");
         }
     }
 }

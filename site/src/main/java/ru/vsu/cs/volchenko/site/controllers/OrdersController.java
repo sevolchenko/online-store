@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.vsu.cs.volchenko.site.entity.OrderDetails;
+import ru.vsu.cs.volchenko.site.entity.OrderedProduct;
 import ru.vsu.cs.volchenko.site.services.OrdersService;
 
 
@@ -22,7 +23,9 @@ public class OrdersController {
     public String show(@PathVariable("id") int id, Model model) {
         OrderDetails orderDetails = ordersService.findOne(id);
         model.addAttribute("orderDetails", orderDetails);
-        model.addAttribute("productsNames", ordersService.getOrderProductsNames(id));
+        model.addAttribute("orderedProducts", orderDetails.getOrderedProducts().stream()
+                .map(OrderedProduct::getProduct)
+                .toList());
         model.addAttribute("overallPrice", ordersService.getOverallPrice(orderDetails));
         return "orders/show";
     }

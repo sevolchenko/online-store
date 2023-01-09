@@ -11,6 +11,9 @@
 <header th:insert="general :: header"> content here</header>
 
 <table id="tableCart"></table>
+
+<hr>
+
 <form th:onsubmit="sendOrder()" th:object="${orderDetails}" id="orderForm" hidden>
     <fieldset>
         <div>
@@ -50,11 +53,10 @@
             <input type="text" th:field="*{promoCode}" id="promoCode"/>
             <span class="errorMsg" id="promoCodeError" hidden></span>
             <br/>
-<!--            <p hidden>-->
-<!--                <input type="submit" id="buttonNew" value="Create" hidden>-->
-<!--            </p>-->
         </div>
     </fieldset>
+
+    <hr>
 </form>
 
 <input type="button" onclick="sendOrder()" value="Order" id="buttonNew" hidden>

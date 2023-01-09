@@ -13,19 +13,20 @@
 
 <div th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}">
     <div class="productFullShow">
-        <div th:if="${product.getPhotos().size() != 0}"  style="display:flex">
+        <div th:if="${product.getPhotos().size() != 0}"  style="display:flex; flex-grow: 1;">
             <form id="formPrevPhoto">
-                <input type="button" onclick="prevPhoto()" value = "Prev">
+                <input type="button" onclick="prevPhoto()" value = "Prev" style="height: 100%">
             </form>
             <div th:each="photo : ${product.getPhotos()}">
                 <img th:src="@{/photos/{product_id}_{position}(product_id=${photo.getProduct().getId()}, position=${photo.getPosition()})}"
                      th:id="'photo' + ${photo.getPosition()}" class="productPhoto">
             </div>
             <form id="formNextPhoto">
-                <input type="button" onclick="nextPhoto()" value = "Next">
+                <input type="button" onclick="nextPhoto()" value = "Next" style="height: 100%">
             </form>
         </div>
         <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}" class="productPhoto">
+        <hr style="width: 100%">
         <p th:text="${product.getName()}">VALUE</p>
         <p th:text="${product.getCategory().getName()}">VALUE</p>
         <p th:text="${product.getDescription()}">VALUE</p>
