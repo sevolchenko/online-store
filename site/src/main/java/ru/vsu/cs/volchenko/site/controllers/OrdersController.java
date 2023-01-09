@@ -1,12 +1,12 @@
 package ru.vsu.cs.volchenko.site.controllers;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.vsu.cs.volchenko.site.entity.OrderDetails;
 import ru.vsu.cs.volchenko.site.services.OrdersService;
 
@@ -20,20 +20,12 @@ public class OrdersController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("orderDetails", ordersService.findOne(id));
+        OrderDetails orderDetails = ordersService.findOne(id);
+        model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("productsNames", ordersService.getOrderProductsNames(id));
+        model.addAttribute("overallPrice", ordersService.getOverallPrice(orderDetails));
         return "orders/show";
     }
-
-//    @PostMapping("/new")
-//    public String create(@ModelAttribute("product") @Valid OrderDetails orderDetails,
-//                         BindingResult bindingResult) {
-//        if (bindingResult.hasErrors())
-//            return "cart/index";
-//
-//        ordersService.save(orderDetails);
-//        return "redirect:/products/" + product.getId();
-//    }
 
 
 }

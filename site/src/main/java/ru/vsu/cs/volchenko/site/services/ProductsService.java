@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 @Service
@@ -30,6 +31,7 @@ public class ProductsService {
 
     private final ProductsRepository productsRepository;
     private final PhotosRepository photoRepository;
+    private static final Random RND = new Random();
 
     public List<Product> findAll() {
         return productsRepository.findAll();
@@ -44,29 +46,47 @@ public class ProductsService {
                 PageRequest.of(page, itemsPerPage)).getContent();
     }
 
+    public List<Product> findSomeProductsWithFirstPhotos() {
+        return findSomeProductsWithFirstPhotos(4);
+    }
+
+    public List<Product> findSomeProductsWithFirstPhotos(int count) {
+        List<Product> products = findAllNotHidden();
+        return RND.ints(count * 2L, 0, countOfNotHidden().intValue())
+                .distinct()
+                .limit(count)
+                .mapToObj(products::get)
+                .peek(product -> {
+                    if (product.getPhotos().size() > 0) {
+                        loadPhoto(product.getPhotos().get(0));
+                    }
+                })
+                .toList();
+    }
+
     public Long countOfNotHidden() {
         return productsRepository.countByStateOfShownInfoNot(StateOfShownInfo.HIDE_ALL);
     }
 
-
-
     public Product findOne(int id) {
         Product product = productsRepository.findById(id).orElse(null);
-        product.getPhotos().forEach(photo -> {
-            Blob blob = photo.getPhoto();
-            try {
-                byte[] array = blob.getBytes(1, (int) blob.length());
-                File file = new File(MvcConfig.SAVES_FOLDER.getPath(),
-                        photo.getProduct().getId() + "_" + photo.getPosition());
-                FileOutputStream out = new FileOutputStream(file);
-                file.deleteOnExit();
-                out.write(array);
-                out.close();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-        });
+        product.getPhotos().forEach(this::loadPhoto);
         return product;
+    }
+
+    private void loadPhoto(Photo photo) {
+        Blob blob = photo.getPhoto();
+        try {
+            byte[] array = blob.getBytes(1, (int) blob.length());
+            File file = new File(MvcConfig.SAVES_FOLDER.getPath(),
+                    photo.getProduct().getId() + "_" + photo.getPosition());
+            FileOutputStream out = new FileOutputStream(file);
+            file.deleteOnExit();
+            out.write(array);
+            out.close();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Product> getCartProducts(String cart) {

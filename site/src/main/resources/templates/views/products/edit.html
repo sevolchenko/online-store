@@ -19,23 +19,23 @@
         </p>
         <label for="name">Enter name: </label>
         <input type="text" th:field="*{name}" id="name"/>
-        <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+        <span class="errorMsg" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</span>
         <br/>
         <label for="description">Enter description: </label>
         <input type="text" th:field="*{description}" id="description"/>
-        <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
+        <span class="errorMsg" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</span>
         <br/>
         <label for="color">Enter color: </label>
         <input type="text" th:field="*{color}" id="color"/>
-        <div style="color:red" th:if="${#fields.hasErrors('color')}" th:errors="*{color}">Color Error</div>
+        <span class="errorMsg" th:if="${#fields.hasErrors('color')}" th:errors="*{color}">Color Error</span>
         <br/>
         <label for="materials">Enter materials: </label>
         <input type="text" th:field="*{materials}" id="materials"/>
-        <div style="color:red" th:if="${#fields.hasErrors('materials')}" th:errors="*{materials}">Materials Error</div>
+        <span class="errorMsg" th:if="${#fields.hasErrors('materials')}" th:errors="*{materials}">Materials Error</span>
         <br/>
         <label for="initialPrice">Enter initial price: </label>
         <input type="number" min="0" th:field="*{initialPrice}" id="initialPrice"/>
-        <div style="color:red" th:if="${#fields.hasErrors('initialPrice')}" th:errors="*{initialPrice}">Initial price Error</div>
+        <span class="errorMsg" th:if="${#fields.hasErrors('initialPrice')}" th:errors="*{initialPrice}">Initial price Error</span>
         <br/>
         <p>
             <label for="shownInfo">Choose shown info: </label>

@@ -21,18 +21,17 @@
     <input type="submit" value="Show">
 </form>
 
-<br>
 
-<div th:each="product : ${products}">
-    <a th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}"
-       th:text="${product.getName() + ': ' + product.getDescription()}">product</a>
+<div style="margin-top: 10px">
+    <div th:each="product : ${products}">
+        <a th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}"
+           th:text="${product.getName() + ': ' + product.getDescription()}">product</a>
+    </div>
 </div>
 
 <div>
-    <p id="allPages"></p>
+    <p id="allPages" hidden></p>
 </div>
-
-<br/>
 
 <script th:inline="javascript">
 
@@ -57,11 +56,12 @@
             }
             document.getElementById("allPages").insertAdjacentHTML("afterend", link);
         }
+        document.getElementById("allPages").style.display = "block";
     }
 
 </script>
 
-<hr/>
+<hr>
 
 <a href="/products/new">Create new product</a>
 

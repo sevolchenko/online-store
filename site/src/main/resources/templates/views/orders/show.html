@@ -23,32 +23,34 @@
 
     <script th:inline="javascript">
 
-            var table = document.getElementById("tableOrderedProducts");
+            let table = document.getElementById("tableOrderedProducts");
 
-            var products = [[${orderDetails.getOrderedProducts()}]]
-            var productsNames = [[${productsNames}]]
+            let products = [[${orderDetails.getOrderedProducts()}]]
+            let productsNames = [[${productsNames}]]
 
             for (var i = 0; i < products.length; i++) {
 
-                var product = products[i];
+                let product = products[i];
 
-                var row = table.insertRow(i);
+                let row = table.insertRow(i);
 
-                var cell0 = row.insertCell(0);
+                let cell0 = row.insertCell(0);
                 cell0.innerHTML = productsNames[i];
 
-                var cell1 = row.insertCell(1);
+                let cell1 = row.insertCell(1);
                 cell1.innerHTML = product.productSize;
 
-                var cell2 = row.insertCell(2);
+                let cell2 = row.insertCell(2);
                 cell2.innerHTML = product.count;
 
-                var cell3 = row.insertCell(3);
+                let cell3 = row.insertCell(3);
                 cell3.innerHTML = product.pricePerOne;
 
             }
 
     </script>
+
+    <p th:text="'Overall price: ' + ${overallPrice}"></p>
 
 </div>
 </body>

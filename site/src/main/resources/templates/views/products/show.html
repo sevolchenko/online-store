@@ -12,7 +12,7 @@
 <header th:insert="general :: header"> content here </header>
 
 <div th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}">
-    <div style="border: 1px black solid;">
+    <div class="productFullShow">
         <div th:if="${product.getPhotos().size() != 0}"  style="display:flex">
             <form id="formPrevPhoto">
                 <input type="button" onclick="prevPhoto()" value = "Prev">
@@ -35,7 +35,6 @@
     </div>
 
     <div>
-        <br>
         <form id="formAdd" th:if="${product.getStateOfShownInfo().toString() == 'ALL_VISIBLE'}">
             <input type="button" th:onclick="'addProductToCart(' + ${product.getId()} + ')'" value = "Add product to cart">
         </form>
@@ -44,11 +43,10 @@
         </form>
     </div>
 
+    <hr>
 
     <div>
-        <br>
         <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit product</a>
-
         <form th:method="DELETE" th:action="@{/products/{id}(id=${product.getId()})}">
             <input type="submit" value="Delete product"/>
         </form>
@@ -58,5 +56,6 @@
 </div>
 
 <p th:if="${product.getStateOfShownInfo().toString() == 'HIDE_ALL'}">Element hidden</p>
+
 </body>
 </html>

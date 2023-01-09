@@ -48,11 +48,40 @@ async function sendOrder() {
 
         const data = await response.json();
 
-        document.location.href = "./orders/" + data["orderId"];
+        if (data["orderId"] !== undefined) {
+            for (var prod in orderContext) {
+                removeProductFromCart(parseInt(orderContext[prod]["id"]));
+            }
 
-        localStorage.removeItem('cart');
-        localStorage.removeItem('orderContext');
+            location.href = "./orders/" + data["orderId"];
+
+        } else {
+            let elements = document.getElementsByClassName("errorMsg");
+            Array.prototype.forEach.call(elements, function(el) {
+                el.style.display = "none";
+            });
+            let errors = data["errors"];
+
+            for (var key in errors) {
+                var div = document.getElementById(key + "Error");
+                div.innerText = errors[key];
+                div.style.display = "block";
+            }
+        }
+
     } catch (error) {
         console.log(error);
     }
+}
+
+function removeProductFromCart(productId) {
+    var cart = getCart();
+    var filtered = cart.filter(function(currProductId){
+        return productId !== currProductId;
+    });
+    localStorage.setItem('cart', JSON.stringify(filtered));
+}
+
+function getCart() {
+    return JSON.parse(localStorage.getItem('cart')) || [];
 }

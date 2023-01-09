@@ -64,9 +64,12 @@ public class ProductsController {
     @PostMapping(path = "/new", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public String create(@RequestPart("images[]") MultipartFile[] multipartFiles,
                          @ModelAttribute("product") @Valid Product product,
-                         BindingResult bindingResult) {
-        if (bindingResult.hasErrors())
+                         BindingResult bindingResult,
+                         Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoriesService.findAll());
             return "products/new";
+        }
 
         List<Photo> photos = new ArrayList<>();
 
@@ -98,9 +101,12 @@ public class ProductsController {
     public String update(@RequestPart("images[]") MultipartFile[] multipartFiles,
                          @ModelAttribute("product") @Valid Product product,
                          BindingResult bindingResult,
-                         @PathVariable("id") int id) {
-        if (bindingResult.hasErrors())
+                         @PathVariable("id") int id,
+                         Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoriesService.findAll());
             return "products/edit";
+        }
 
         List<Photo> photos = new ArrayList<>();
 

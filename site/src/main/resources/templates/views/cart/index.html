@@ -16,48 +16,48 @@
         <div>
             <label for="name">Enter your name: </label>
             <input type="text" th:field="*{name}" id="name"/>
-            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+            <span class="errorMsg" id="nameError" hidden></span>
             <br/>
             <label for="phoneNumber">Enter phone number: </label>
             <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
-            <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone number Error</div>
+            <span class="errorMsg" id="phoneNumberError" hidden></span>
             <br/>
             <label for="email">Enter email: </label>
             <input type="text" th:field="*{email}" id="email"/>
-            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+            <span class="errorMsg" id="emailError" hidden></span>
             <br/>
             <label for="postIndex">Enter post index: </label>
             <input type="text" th:field="*{postIndex}" id="postIndex"/>
-            <div style="color:red" th:if="${#fields.hasErrors('postIndex')}" th:errors="*{postIndex}">Post index Error</div>
+            <span class="errorMsg" id="postIndexError" hidden></span>
             <br/>
             <label for="country">Enter country: </label>
             <input type="text" th:field="*{country}" id="country"/>
-            <div style="color:red" th:if="${#fields.hasErrors('country')}" th:errors="*{country}">Country Error</div>
+            <span class="errorMsg" id="countryError" hidden></span>
             <br/>
             <label for="city">Enter city: </label>
             <input type="text" th:field="*{city}" id="city"/>
-            <div style="color:red" th:if="${#fields.hasErrors('city')}" th:errors="*{city}">City Error</div>
+            <span class="errorMsg" id="cityError" hidden></span>
             <br/>
             <label for="address">Enter address: </label>
             <input type="text" th:field="*{address}" id="address"/>
-            <div style="color:red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</div>
+            <span class="errorMsg" id="addressError" hidden></span>
             <br/>
             <label for="comment">Enter comment: </label>
             <input type="text" th:field="*{comment}" id="comment"/>
-            <div style="color:red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment Error</div>
+            <span class="errorMsg" id="commentError" hidden></span>
             <br/>
             <label for="promoCode">Enter promocode: </label>
             <input type="text" th:field="*{promoCode}" id="promoCode"/>
-            <div style="color:red" th:if="${#fields.hasErrors('promoCode')}" th:errors="*{promoCode}">Promocode Error</div>
+            <span class="errorMsg" id="promoCodeError" hidden></span>
             <br/>
+<!--            <p hidden>-->
+<!--                <input type="submit" id="buttonNew" value="Create" hidden>-->
+<!--            </p>-->
         </div>
-        <p>
-            <input type="submit" id="buttonNew" value="Create" hidden>
-        </p>
     </fieldset>
 </form>
 
-<input type="button" onclick="sendOrder()" value = "Order">
+<input type="button" onclick="sendOrder()" value="Order" id="buttonNew" hidden>
 
 <script th:inline="javascript">
 
@@ -140,7 +140,7 @@
                 }
 
                 document.getElementById("orderForm").style.display = "block";
-
+                document.getElementById("buttonNew").style.display = "block";
             }
         }
     }
