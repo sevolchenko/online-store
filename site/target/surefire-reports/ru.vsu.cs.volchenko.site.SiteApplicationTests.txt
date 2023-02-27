@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ru.vsu.cs.volchenko.site.SiteApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.4 s - in ru.vsu.cs.volchenko.site.SiteApplicationTests

@@ -1,0 +1,6 @@
+{
+  "timestamp": "2022-12-23T19:57:09.227+00:00",
+  "status": 404,
+  "error": "Not Found",
+  "path": "/views/general.html"
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show product</title>
+</head>
+<body>
+<header th:insert="general :: header"> content here </header>
+<div th:fragment="productShow">
+    <b th:text="'Order details: ' + ${orderDetails.getId()}"></b><br>
+
+    <hr>
+
+    <p th:text="${orderDetails.getName()}"></p>
+    <p th:text="${orderDetails.getPhoneNumber()}"></p>
+    <p th:text="${orderDetails.getEmail()}"></p>
+    <p th:text="${orderDetails.getPostIndex()}"></p>
+    <p th:text="${orderDetails.getCountry()}"></p>
+    <p th:text="${orderDetails.getCity()}"></p>
+    <p th:text="${orderDetails.getAddress()}"></p>
+    <p th:text="${orderDetails.getComment()}"></p>
+    <p th:text="${orderDetails.getPromoCode()}"></p>
+    <p th:text="${orderDetails.getOrderState()}"></p>
+
+    <hr>
+
+    <table id="tableOrderedProducts"></table>
+
+    <script th:inline="javascript">
+
+            let table = document.getElementById("tableOrderedProducts");
+
+            let orderedProducts = [[${orderDetails.getOrderedProducts()}]];
+            let products = [[${orderedProducts}]];
+
+            for (var i = 0; i < orderedProducts.length; i++) {
+
+                let product = products[i];
+                let orderedProduct = orderedProducts[i]
+
+                let row = table.insertRow(i);
+
+                let cell0 = row.insertCell(0);
+                cell0.innerHTML = '<a href=../products/' + product.id + '>' + product.name + '</a>';
+
+                let cell1 = row.insertCell(1);
+                cell1.innerHTML = orderedProduct.productSize;
+
+                let cell2 = row.insertCell(2);
+                cell2.innerHTML = orderedProduct.count;
+
+                let cell3 = row.insertCell(3);
+                cell3.innerHTML = orderedProduct.pricePerOne;
+
+            }
+
+    </script>
+
+    <hr>
+
+    <p th:text="'Overall price: ' + ${overallPrice}"></p>
+
+</div>
+</body>
+</html>

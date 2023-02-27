@@ -1,0 +1,6 @@
+{
+  "timestamp": "2022-12-24T12:19:16.709+00:00",
+  "status": 415,
+  "error": "Unsupported Media Type",
+  "path": "/orders/addCartInfo"
+}

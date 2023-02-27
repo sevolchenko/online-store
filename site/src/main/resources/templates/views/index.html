@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <header th:insert="general :: header"> content here </header>
+    <span>
+        Home page
+    </span>
+
+    <div class="productCards">
+        <div th:each="product : ${products}">
+            <a class="productCard" th:if="${product.getStateOfShownInfo().toString() != 'HIDE_ALL'}" th:href="@{/products/{id}(id=${product.getId()})}">
+                <div th:if="${product.getPhotos().size() != 0}">
+                    <img th:src="@{/photos/{product_id}_{position}(product_id=${product.getId()}, position=${product.getPhotos().get(0).getPosition()})}"
+                         th:id="'photo' + ${photo.getPosition()}" class="productPhoto">
+                </div>
+                <img th:if="${product.getPhotos().isEmpty()}" th:src="@{/photos/no_photo.jpg}" class="productPhoto">
+
+                <span th:text="${product.getName() + ' ' + product.getCurrentPrice()}">product></span>
+            </a>
+        </div>
+    </div>
+
+
+</body>
+</html>
