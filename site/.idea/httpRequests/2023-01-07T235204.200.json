@@ -1,6 +1,0 @@
-{
-  "errors": {
-    "name": "Name should not be empty",
-    "phoneNumber": "Phone number should not be empty"
-  }
-}

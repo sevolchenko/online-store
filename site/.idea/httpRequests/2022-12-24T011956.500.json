@@ -1,6 +1,0 @@
-{
-  "timestamp": "2022-12-23T22:19:56.387+00:00",
-  "status": 500,
-  "error": "Internal Server Error",
-  "path": "/products/6/dto"
-}
